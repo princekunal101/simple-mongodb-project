@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>MongoDB User Management</title>
+</head>
+<body class="w-full h-screen flex gap-6 flex-col justify-center items-center bg-gray-200 p-4">
+   
+    <h2 class="text-3xl ">MongoDB Project</h2>
+    <form class="flex flex-col bg-gray-300 gap-6 px-4 py-6 justify-center items-center" id="userForm">
+        <a class="underline" href="/aggrigate" >View Aggregation</a>
+        
+        <input class="px-2" type="text" id="name" name="name" placeholder="Name" required>
+       
+        <input class="px-2" type="number" id="age" name="age" placeholder="age"  required>
+        
+        <input class="px-2" type="text" id="city" name="city" placeholder="city" required>
+        <button class="w-full bg-white" type="submit">Add User</button>
+    </form>
+
+    <script>
+        document.getElementById('userForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const user = Object.fromEntries(formData.entries());
+            user.age = Number(user.age); // Convert age to a number
+            console.log(user);
+            
+
+            try {
+                const response = await fetch('/addUser', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(user)
+                });
+
+                if (response.ok) {
+                    alert('User added successfully');
+                } else {
+                    alert('Error adding user');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error adding user');
+            }
+        });
+    </script>
+</body>
+</html>
